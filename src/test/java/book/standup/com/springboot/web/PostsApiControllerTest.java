@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -75,7 +72,7 @@ public class PostsApiControllerTest {
 
         PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder().title(expectedTitle).content(expectedContent).build();
 
-        String url = "http://localhost:"+port+"/api/v1/posts/"+updateId;
+        String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
 
         HttpEntity<PostsUpdateRequestDto> requestEntity = new HttpEntity<>(requestDto);
 
@@ -89,6 +86,37 @@ public class PostsApiControllerTest {
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+
+    }
+
+    @Test
+    public void deletePosts() {
+
+        // 1. 등록
+        PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder().title(title).content(content).author(author).build();
+        String urlRegister = "http://localhost:" + port + "/api/v1/posts";
+
+        //request & response
+        ResponseEntity<Long> responseSaveEntity = restTemplate.postForEntity(urlRegister, requestDto, Long.class);
+
+        //check
+        assertThat(responseSaveEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseSaveEntity.getBody()).isGreaterThan(0L);
+
+        List<Posts> all = postsRepository.findAll();
+        Long registedId = all.get(0).getId();
+        assertThat(all.get(0).getTitle()).isEqualTo(title);
+        assertThat(all.get(0).getContent()).isEqualTo(content);
+
+        // 2. 삭제
+        String urlDelete = "http://localhost:" + port + "/api/v1/posts/" + registedId;
+        // when
+        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpEntity entity = new HttpEntity(httpHeaders);
+        ResponseEntity<Long> responseDeleteEntity = restTemplate.exchange(urlDelete, HttpMethod.DELETE, entity, Long.class);
+        //check
+        assertThat(responseDeleteEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(responseDeleteEntity.getBody()).isGreaterThan(0L);
 
     }
 
