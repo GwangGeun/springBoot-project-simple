@@ -38,7 +38,6 @@ public class CustomOauth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         // OAuth2UserService 를 통해 가져온 OAuth2User 의 attribute 를 담은 클래스 ( DTO )
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-        System.out.println("registrationId >>>"+registrationId+" userNameAttributeName >>>"+userNameAttributeName+" oAuth2User.getAttributes() >>> "+ oAuth2User.getAttributes());
 
         // User 를 DB 에 저장
         User user = saveOrUpdate(attributes);
