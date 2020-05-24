@@ -4,3 +4,15 @@ files:
   - source:  /  # CodeDeploy 에서 전달해준 파일 중 destination 으로 이동시킬 대상을 지정 ( / -> 전체 파일을 의미 )
     destination: /home/ubuntu/app/step2/zip/ # source 에서 지정된 파일을 받을 위치
     overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+
+hooks:
+  ApplicationStart:
+    - location: scripts/deploy.sh
+      timeout: 60
+      runas: ubuntu
