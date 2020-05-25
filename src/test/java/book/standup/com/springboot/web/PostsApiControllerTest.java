@@ -44,7 +44,6 @@ public class PostsApiControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-
     private MockMvc mvc;
 
     // @SpringBootTest 에서 MockMvc 를 사용하기 위한 setup : 테스트 시작 전에 항상 MockMvc 를 만들어준다.

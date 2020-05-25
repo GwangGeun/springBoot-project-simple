@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  *  - "/" 등 지정된 URL 들은 permitAll() 옵션을 통해 전체 열람 권한을 부여
                  *  - "/api/v1/**" 주소를 가진 API 는 USER 권한을 가진 사람만 접근 가능하도록 설정
                  *  */
-                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
+                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**","/profile").permitAll()
                 // enum 의 name method : https://www.tutorialspoint.com/java/lang/enum_name.htm
                 .antMatchers("/api/v1/**").hasRole(Role.USER.name())
                 /* anyRequest
