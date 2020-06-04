@@ -13,7 +13,7 @@ public class HelloController {
         return "hello";
     }
 
-//  jackson library 의 도움으로 Objecct 만 return 해도 json 형태로 변환된다
+//  jackson library 의 도움으로 Objecct 만 return 해도 json 형태로 변환된다 !
     @GetMapping("/hello/dto")
     public HelloResponseDto helloDto(@RequestParam("name") String name, @RequestParam("amount") int amount){
         return new HelloResponseDto(name,amount);
